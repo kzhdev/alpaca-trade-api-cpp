@@ -6,9 +6,9 @@ project(alpaca-trade-api-cpp
 
 set(CMAKE_CXX_STANDARD 17)
 
-if(APPLE)
-    set(OPENSSL_ROOT_DIR /usr/local/Cellar/openssl@1.1/1.1.1g/)
-endif()
+#if(APPLE)
+#    set(OPENSSL_ROOT_DIR /usr/local/Cellar/openssl@1.1/1.1.1g/)
+#endif()
 
 include(cmake/dependencies.cmake)
 
@@ -48,11 +48,13 @@ set(SOURCES
         )
 
 add_library(alpaca-trade-api-cpp ${SOURCES})
+add_dependencies(alpaca-trade-api-cpp uwebsockets)
 target_compile_definitions(alpaca-trade-api-cpp PUBLIC CPPHTTPLIB_OPENSSL_SUPPORT)
 if (CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_definitions(alpaca-trade-api-cpp PUBLIC DEBUG)
 endif()
 target_include_directories(alpaca-trade-api-cpp PUBLIC "./")
+target_link_libraries(alpaca-trade-api-cpp PUBLIC glog uv zlib uwebsockets ssl crypto)
 
 
 set(TEST_SOURCES
